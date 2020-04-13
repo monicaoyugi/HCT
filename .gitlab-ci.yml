@@ -2,7 +2,6 @@ image: rbekker87/build-tools:latest
 
 stages:
   - ver
-  - init
   - deploy
 
 ver:
@@ -11,17 +10,12 @@ ver:
     - python --version
     - whoami
 
-init:
-  stage: init
-  script:
-    - apk add postgresql-dev --no-cache
-    - pip install psycopg2-binary
-    - pip install -r requirements.txt
-
 
 deploy_staging:
   stage: deploy
   script:
+    - pip install psycopg2-binary
+    - pip install -r requirements.txt
     - git remote add heroku https://heroku:$HEROKU_API_KEY@git.heroku.com/healthtrackerr.git
     - git push heroku master
     - echo "Deployed to Staging Server https://healthtrackerr.herokuapp.com"
