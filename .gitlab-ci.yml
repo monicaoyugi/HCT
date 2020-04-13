@@ -4,4 +4,4 @@ heroku:
  - dev
  script:
  - git remote add heroku https://heroku:$60f5c8c0-584d-4daf-b3f6-68239762a2b6Y@git.heroku.com/healthtrackerr.git
- - git push -f heroku dev
+ - git push -f --set-upstream heroku dev
