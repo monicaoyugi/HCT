@@ -14,7 +14,6 @@ ver:
 deploy_staging:
   stage: deploy
   script:
-    - pip install psycopg2-binary
     - pip install -r requirements.txt
     - git remote add heroku https://heroku:$HEROKU_API_KEY@git.heroku.com/healthtrackerr.git
     - git push heroku master
