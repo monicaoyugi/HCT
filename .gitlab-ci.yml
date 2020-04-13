@@ -1,4 +1,7 @@
-stages:
+heroku:
+ stage: deploy
+
+ stages:
     - staging
 
 staging:
