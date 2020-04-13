@@ -1,7 +1,11 @@
-heroku:
- stage: deploy
- only:
- - dev
- script:
- - git remote add heroku https://heroku:$60f5c8c0-584d-4daf-b3f6-68239762a2b6Y@git.heroku.com/healthtrackerr.git
- - git push -f --set-upstream heroku master
+stages:
+    - staging
+
+staging:
+    type: deploy
+    stage: staging
+    image: ruby:latest
+    script:
+        - dpl --provider=heroku --app=$HEROKU_APP --api-key=$HEROKU_API_KEY
+    only:
+        - staging
