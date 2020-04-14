@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-
+import dj_database_url
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'authentication'
+    'authentication',
+    'inventory'
 ]
 
 MIDDLEWARE = [
@@ -71,6 +72,14 @@ TEMPLATES = [
 WSGI_APPLICATION = 'HealthS.wsgi.application'
 
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'authentication.backends.JWTAuthentication',),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.AllowAny',
+    ),
+}
+
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
@@ -80,16 +89,16 @@ if os.environ.get('MODE') == "dev":
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
             'PORT': os.environ.get('DB_PORT'),
             'NAME': os.environ.get('DB_NAME'),
-            'USER':os.environ.get('DB_USER'),
-            'PASSWORD':os.environ.get('DB_PASSWORD'),
+            'USER': os.environ.get('DB_USER'),
+            'PASSWORD': os.environ.get('DB_PASSWORD'),
             'HOST': os.environ.get('DB_HOST'),
         }
-}
-#production
+    }
+# production
 else:
     DATABASES = {
         'default': dj_database_url.config(
-            default=config('DATABASE_URL')
+            default=os.environ.get('DATABASE_URL')
         )
     }
 

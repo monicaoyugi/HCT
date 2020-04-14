@@ -75,7 +75,7 @@ class LoginSerializer(serializers.Serializer):
         user = authenticate(username=email, password=password)
 
         if user is None:
-            return serializers.ValidationError({
+            raise serializers.ValidationError({
                 'invalid': 'the password or email is wrong'
             })
 

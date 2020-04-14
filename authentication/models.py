@@ -38,7 +38,7 @@ class UserManager(BaseUserManager):
         if not adress:
             raise TypeError("address name is required.")
 
-        user = self.model(first_name=first_name, last_name=last_name, adress=adress, contact=contact,
+        user = self.model(first_name=first_name, last_name=last_name,
                           username=username, email=self.normalize_email(email), role='SU')
         user.set_password(password)
         user.is_active = True
@@ -75,14 +75,14 @@ class UserManager(BaseUserManager):
         if not adress:
             raise TypeError("address name is required.")
 
-            user = self.model(first_name=first_name, last_name=last_name,
-                              username=username, email=self.normalize_email(email), role='SU')
-            user.set_password(password)
-            user.is_active = True
-            user.is_verified = True
-            user.is_staff = True
-            user.is_superuser = True
-            user.save()
+        user = self.model(first_name=first_name, last_name=last_name,
+                          username=username, adress=adress, contact=contact, email=self.normalize_email(email), role='HL')
+        user.set_password(password)
+        user.is_active = True
+        user.is_verified = True
+        user.is_staff = True
+        user.is_superuser = True
+        user.save()
 
 
 class User(AbstractUser):
@@ -98,6 +98,7 @@ class User(AbstractUser):
     username = models.CharField(unique=True, max_length=12)
 
     USERNAME_FIELD = 'email'
+
     REQUIRED_FIELDS = ['first_name', 'last_name',
                        'contact', 'adress', 'username']
 
