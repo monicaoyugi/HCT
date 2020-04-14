@@ -54,6 +54,7 @@ class JWTAuthentication(authentication.BaseAuthentication):
         """
         try:
             payload = jwt.decode(token, settings.SECRET_KEY)
+            print(payload)
         except jwt.ExpiredSignatureError:
             msg = 'Your token has expired, please log in again.'
             raise exceptions.AuthenticationFailed(msg)
