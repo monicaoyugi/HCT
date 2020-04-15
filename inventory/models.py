@@ -1,5 +1,6 @@
 from django.db import models
 from authentication.models import User
+import datetime
 
 # Create your models here.
 
@@ -13,17 +14,21 @@ class Hospital(models.Model):
         return f'{self.name}'
 
 
-class Department(models.Model):
+class Donor(models.Model):
     name = models.CharField(max_length=15)
-    users = models.ManyToManyField(User)
+    email = models.EmailField(max_length=64)
+    location = models.CharField(max_length=20)
+    date = models.DateField(("Date"), default=datetime.date.today)
+    User = models.ForeignKey(Hospital, null=True, on_delete=models.CASCADE)
 
-    def __str__(self):
-        return f'{self.name}'
+
+def __str__(self):
+    return f'{self.name}'
 
 
-class Item(models.Model):
+class ItemDonated(models.Model):
     name = models.CharField(max_length=105)
-    code = models.CharField(max_length=150)
+    serial_number = models.CharField(max_length=150)
     price = models.CharField(max_length=150)
     quantity = models.CharField(max_length=150)
     notes = models.TextField(max_length=150)
