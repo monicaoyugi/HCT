@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from inventory.models import Item, Hospital, Department
+from inventory.models import Item, Hospital
 
 
 class ItemSerializer(serializers.ModelSerializer):
@@ -12,9 +12,3 @@ class HospitalSerializers(serializers.ModelSerializer):
     class Meta:
         model = Hospital
         fields = '__all__'
-
-
-class DepartmentSerializers(serializers.ModelSerializer):
-    class Meta:
-        model = Department
-        fields = ['name', 'users']
