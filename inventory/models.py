@@ -1,6 +1,6 @@
 from django.db import models
 from authentication.models import User
-import datetime
+
 
 # Create your models here.
 
@@ -15,11 +15,9 @@ class Hospital(models.Model):
 
 
 class Donor(models.Model):
-    name = models.CharField(max_length=15)
-    email = models.EmailField(max_length=64)
+    donor = models.ForeignKey(User, on_delete=models.CASCADE)
     location = models.CharField(max_length=20)
-    date = models.DateField(("Date"), default=datetime.date.today)
-    User = models.ForeignKey(Hospital, null=True, on_delete=models.CASCADE)
+    hospital = models.ForeignKey(Hospital, null=True, on_delete=models.CASCADE)
 
 
 def __str__(self):
