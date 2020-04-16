@@ -1,7 +1,7 @@
 from django.urls import path
 from inventory.views import (
     ItemListCreateAPIView, HospitalListCreateAPIView,
-    ItemRetrieveUpdateDestroyAPIView, HospitalRetrieveUpdateDestroyAPIView, DonorListCreateAPIView, DonorRetrieveUpdateDestroyAPIView,
+    ItemRetrieveUpdateDestroyAPIView, HospitalRetrieveUpdateDestroyAPIView, DonorListCreateAPIView, DonorRetrieveUpdateDestroyAPIView, DonationListCreateAPIView, DonationRetrieveUpdateDestroyAPIView
 )
 
 urlpatterns = [
@@ -13,4 +13,8 @@ urlpatterns = [
     path('donor', DonorListCreateAPIView.as_view(), name='donor-list'),
     path('donor/<int:pk>', DonorRetrieveUpdateDestroyAPIView.as_view(),
          name='donor-detail'),
+    path('donation', DonationListCreateAPIView.as_view(), name='donation'),
+    path('donation/<int:pk>', DonationRetrieveUpdateDestroyAPIView.as_view(),
+         name='donation'),
+
 ]

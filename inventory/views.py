@@ -2,12 +2,12 @@ from rest_framework.generics import GenericAPIView, ListCreateAPIView, RetrieveU
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
-from inventory.serializers import ItemDonatedSerializer, HospitalSerializers, DonorSerializers
-from inventory.models import ItemDonated, Hospital, Donor
+from inventory.serializers import ItemSerializer, HospitalSerializer, DonorSerializer, DonationSerializer
+from inventory.models import Item, Hospital, Donor, Donation
 
 
 class ItemListCreateAPIView(ListCreateAPIView):
-    serializer_class = ItemDonatedSerializer
+    serializer_class = ItemSerializer
     permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
@@ -28,7 +28,7 @@ class ItemListCreateAPIView(ListCreateAPIView):
 
 
 class ItemRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
-    serializer_class = ItemDonatedSerializer
+    serializer_class = ItemSerializer
     permission_classes = (IsAuthenticated,)
     lookup_field = 'pk'
 
@@ -43,7 +43,6 @@ class ItemRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     def update(self, request, pk):
         """ update an item """
         data = request.data
-        print(data)
         item = get_object_or_404(Item, pk=pk)
         serializer = self.serializer_class(item, data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -59,7 +58,9 @@ class ItemRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
 
 
 class HospitalListCreateAPIView(ListCreateAPIView):
-    serializer_class = HospitalSerializers
+    serializer_class = HospitalSerializer
+    permission_classes = (IsAuthenticated,)
+    lookup_field = 'pk'
 
     def get_queryset(self):
         return Hospital.objects.all()
@@ -79,7 +80,7 @@ class HospitalListCreateAPIView(ListCreateAPIView):
 
 
 class HospitalRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
-    serializer_class = HospitalSerializers
+    serializer_class = HospitalSerializer
     permission_classes = (IsAuthenticated,)
     lookup_field = 'pk'
 
@@ -107,7 +108,7 @@ class HospitalRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
 
 
 class DonorListCreateAPIView(ListCreateAPIView):
-    serializer_class = DonorSerializers
+    serializer_class = DonorSerializer
 
     def get_queryset(self):
         return Donor.objects.all()
@@ -127,7 +128,7 @@ class DonorListCreateAPIView(ListCreateAPIView):
 
 
 class DonorRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
-    serializer_class = DonorSerializers
+    serializer_class = DonorSerializer
     permission_classes = (IsAuthenticated,)
     lookup_field = 'pk'
 
@@ -152,3 +153,57 @@ class DonorRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
         donor = get_object_or_404(donor, pk=pk)
         donor.delete()
         return Response({"message": "user succesfully deleted"})
+
+
+"""donation"""
+
+
+class DonationListCreateAPIView(ListCreateAPIView):
+    serializer_class = DonationSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        return Donation.objects.all()
+
+    def post(self, request):
+        data = request.data
+
+        serializer = self.serializer_class(data=data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        donation = serializer.data
+        response = {
+            'donation': donation
+
+        }
+        return Response(response)
+
+
+class DonationRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
+    serializer_class = DonationSerializer
+    permission_classes = (IsAuthenticated,)
+    lookup_field = 'pk'
+
+    def get_queryset(self):
+        return Donation.objects.all()
+
+    def get(self, request, pk):
+        donation = get_object_or_404(Donation, pk=pk)
+        serializer = self.serializer_class(donation)
+        return Response(serializer.data)
+
+    def update(self, request, pk):
+        """ update donation """
+        data = request.data
+        donation = get_object_or_404(Donation, pk=pk)
+        serializer = self.serializer_class(donation, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(serializer.data)
+
+    def delete(self, request, pk):
+        """ delete an donation """
+        donation = get_object_or_404(Donation, pk=pk)
+        donation.delete()
+        return Response({"message": "donation deleted successfully"})

@@ -1,20 +1,26 @@
 from rest_framework import serializers
-from inventory.models import ItemDonated, Hospital, Donor
+from inventory.models import Item, Hospital, Donor, Donation
 
 
-class ItemDonatedSerializer(serializers.ModelSerializer):
+class ItemSerializer(serializers.ModelSerializer):
     class Meta:
-        model = ItemDonated
+        model = Item
         fields = '__all__'
 
 
-class HospitalSerializers(serializers.ModelSerializer):
+class HospitalSerializer(serializers.ModelSerializer):
     class Meta:
         model = Hospital
         fields = '__all__'
 
 
-class DonorSerializers(serializers.ModelSerializer):
+class DonorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Donor
+        fields = '__all__'
+
+
+class DonationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Donation
         fields = '__all__'
