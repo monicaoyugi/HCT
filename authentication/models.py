@@ -17,7 +17,7 @@ class UserManager(BaseUserManager):
                     role='SU',
                     password=None,
                     contact=None,
-                    adress=None,
+                    address=None,
                     ):
 
         if not first_name:
@@ -35,7 +35,7 @@ class UserManager(BaseUserManager):
         if not contact:
             raise TypeError("contact name is required.")
 
-        if not adress:
+        if not address:
             raise TypeError("address name is required.")
 
         user = self.model(first_name=first_name, last_name=last_name,
@@ -54,7 +54,7 @@ class UserManager(BaseUserManager):
                          role='HL',
                          password=None,
                          contact=None,
-                         adress=None,
+                         address=None,
                          ):
 
         if not first_name:
@@ -72,11 +72,11 @@ class UserManager(BaseUserManager):
         if not contact:
             raise TypeError("contact name is required.")
 
-        if not adress:
+        if not address:
             raise TypeError("address name is required.")
 
         user = self.model(first_name=first_name, last_name=last_name,
-                          username=username, adress=adress, contact=contact, email=self.normalize_email(email), role='HL')
+                          username=username, address=address, contact=contact, email=self.normalize_email(email), role='HL')
         user.set_password(password)
         user.is_active = True
         user.is_verified = True
@@ -92,15 +92,15 @@ class User(AbstractUser):
         ('HL', 'HEALTH TRACKER ADMIN')
     )
     role = models.CharField(max_length=3, choices=USER_ROLES, default='HA')
-    email = models.EmailField(unique=True)
+    email = models.EmailField(max_length=50, unique=True)
     contact = models.CharField(max_length=10)
-    adress = models.CharField(max_length=60)
+    address = models.CharField(max_length=60)
     username = models.CharField(unique=True, max_length=12)
 
     USERNAME_FIELD = 'email'
 
     REQUIRED_FIELDS = ['first_name', 'last_name',
-                       'contact', 'adress', 'username']
+                       'contact', 'address', 'username']
 
     objects = UserManager()
 
@@ -133,3 +133,11 @@ class User(AbstractUser):
             'exp': int(token_expiry.strftime('%s'))
         }, settings.SECRET_KEY, algorithm='HS256')
         return token.decode('utf-8')
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    bio = models.TextField(max_length=500)
+    email = models.EmailField(max_length=20)
+    location = models.CharField(max_length=50)
+    image = models.ImageField(default='default.jpg', upload_to='profile')

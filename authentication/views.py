@@ -1,8 +1,9 @@
 from django.test import TestCase
+from rest_framework import status
 from rest_framework.generics import GenericAPIView
-from authentication.serializers import RegisterSerializer, LoginSerializer
+from authentication.serializers import RegisterSerializer, LoginSerializer, ProfileCreateSerializer
 from rest_framework.response import Response
-
+from .models import Profile
 # Create your tests here.
 
 
@@ -41,3 +42,23 @@ class LoginAPIView(GenericAPIView):
         }
 
         return Response(response)
+
+
+class ProfileCreateAPIView(GenericAPIView):
+    model = Profile
+    serializer_class = ProfileCreateSerializer
+
+    def post(self, request, *args, **kwargs):
+        data = {
+            'username': request.data.get('username', None),
+            'email': request.data.get('email', None),
+        }
+
+        serializer = ProfileCreateSerializer(data=data)
+        print(serializer)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
