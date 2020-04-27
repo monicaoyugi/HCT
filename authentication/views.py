@@ -49,16 +49,10 @@ class ProfileCreateAPIView(GenericAPIView):
     serializer_class = ProfileCreateSerializer
 
     def post(self, request, *args, **kwargs):
-        data = {
-            'username': request.data.get('username', None),
-            'email': request.data.get('email', None),
-        }
-
+        data = request.data
+        print(Profile.objects.filter(user=1).first().user.username)
         serializer = ProfileCreateSerializer(data=data)
-        print(serializer)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(
-                serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(
+            serializer.data, status=status.HTTP_201_CREATED)

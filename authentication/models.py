@@ -138,6 +138,4 @@ class User(AbstractUser):
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField(max_length=500)
-    email = models.EmailField(max_length=20)
     location = models.CharField(max_length=50)
-    image = models.ImageField(default='default.jpg', upload_to='profile')

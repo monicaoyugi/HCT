@@ -87,21 +87,6 @@ class LoginSerializer(serializers.Serializer):
 
 
 class ProfileCreateSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(source='user.username')
-
     class Meta:
         model = Profile
-        fields = [
-            'username',
-            'email',
-        ]
-
-    def create(self, validated_data):
-        user = get_user_model().objects.create(
-            username=validated_data['user']['username'])
-        user.set_password(User.objects.make_random_password())
-        user.save()
-
-        profile = Profile.objects.create(user=user)
-
-        return profile
+        fields = '__all__'
