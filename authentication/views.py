@@ -50,7 +50,7 @@ class ProfileCreateAPIView(GenericAPIView):
 
     def post(self, request, *args, **kwargs):
         data = request.data
-        print(Profile.objects.filter(user=1).first().user.username)
+        # print(Profile.objects.filter(user=1).first().user.username)
         serializer = ProfileCreateSerializer(data=data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
