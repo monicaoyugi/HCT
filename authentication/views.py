@@ -48,7 +48,7 @@ class ProfileCreateAPIView(GenericAPIView):
     model = Profile
     serializer_class = ProfileCreateSerializer
 
-    def post(self, request, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
         data = request.data
         # print(Profile.objects.filter(user=1).first().user.username)
         serializer = ProfileCreateSerializer(data=data)
