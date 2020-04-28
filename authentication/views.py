@@ -4,6 +4,7 @@ from rest_framework.generics import GenericAPIView, ListCreateAPIView
 from authentication.serializers import RegisterSerializer, LoginSerializer, ProfileSerializer
 from rest_framework.response import Response
 from .models import Profile
+from rest_framework.permissions import IsAuthenticated
 # Create your tests here.
 
 
@@ -11,6 +12,7 @@ class RegistrationAPIView(GenericAPIView):
     serializer_class = RegisterSerializer
 
     def post(self, request):
+        user = request.user
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
@@ -45,16 +47,18 @@ class LoginAPIView(GenericAPIView):
 
 
 class ProfileAPIView(ListCreateAPIView):
-    model = Profile
+    permission_classes = (IsAuthenticated,)
     serializer_class = ProfileSerializer
 
     def get_queryset(self):
+        print(Profile.objects.filter(user=1).first().user.email)
         return Profile.objects.all()
 
     def post(self, request, *args, **kwargs):
         data = request.data
+        print(request.user)
         serializer = ProfileSerializer(data=data)
         serializer.is_valid(raise_exception=True)
-        serializer.save()
+        serializer.save(user=request.user)
         return Response(
             serializer.data, status=status.HTTP_201_CREATED)
