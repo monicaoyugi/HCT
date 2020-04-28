@@ -86,7 +86,7 @@ class LoginSerializer(serializers.Serializer):
         return user_1
 
 
-class ProfileCreateSerializer(serializers.ModelSerializer):
+class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = '__all__'
