@@ -1,6 +1,6 @@
 from django.test import TestCase
 from rest_framework import status
-from rest_framework.generics import GenericAPIView
+from rest_framework.generics import GenericAPIView, ListCreateAPIView
 from authentication.serializers import RegisterSerializer, LoginSerializer, ProfileSerializer
 from rest_framework.response import Response
 from .models import Profile
@@ -44,19 +44,14 @@ class LoginAPIView(GenericAPIView):
         return Response(response)
 
 
-class ProfileAPIView(GenericAPIView):
+class ProfileAPIView(ListCreateAPIView):
     model = Profile
     serializer_class = ProfileSerializer
 
-    def post(self, request, *args, **kwargs):
-        data = request.data
-        serializer = ProfileSerializer(data=data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(
-            serializer.data, status=status.HTTP_201_CREATED)
+    def get_queryset(self):
+        return Profile.objects.all()
 
-    def get(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         data = request.data
         serializer = ProfileSerializer(data=data)
         serializer.is_valid(raise_exception=True)
