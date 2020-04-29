@@ -119,7 +119,7 @@ class DonorListCreateAPIView(ListCreateAPIView):
         serializer = self.serializer_class(data=data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        hospital = serializer.data
+        donor = serializer.data
         response = {
             'donor': donor
 
@@ -129,7 +129,7 @@ class DonorListCreateAPIView(ListCreateAPIView):
 
 class DonorRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     serializer_class = DonorSerializer
-    permission_classes = (IsAuthenticated,)
+    # permission_classes = (IsAuthenticated,)
     lookup_field = 'pk'
 
     def get_queryset(self):
