@@ -88,6 +88,7 @@ REST_FRAMEWORK = {
         'authentication.backends.JWTAuthentication',),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.AllowAny',
+
     ),
 }
 
